@@ -1,0 +1,81 @@
+@keyframes waiting {
+  0% {
+    opacity: 0;
+  }
+
+  35%,
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes joltBG {
+  0% {
+    opacity: 0.3;
+  }
+
+  22%,
+  26% {
+    opacity: 0.2;
+  }
+
+  27%,
+  45% {
+    opacity: 0.4;
+  }
+
+  46%,
+  76% {
+    opacity: 0.5;
+  }
+
+  76%,
+  78% {
+    opacity: 0.05;
+  }
+  78% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 0.3;
+  }
+}
+
+.console-output {
+  background: rgb(20, 30, 30);
+  color: rgb(220, 230, 230);
+  margin: 0 auto;
+  font-family: Monaco, Consolas, 'Lucida Console', monospace;
+  padding: 1em;
+  line-height: 1.45;
+  position: relative;
+  overflow: auto;
+  display: flex;
+  flex-direction: column-reverse;
+
+  p {
+    margin: 0;
+  }
+
+  p.left {
+    text-align: left;
+  }
+
+  p.right {
+    text-align: right;
+  }
+
+  p.center {
+    text-align: center;
+  }
+
+  &::selection {
+    color: rgb(20, 30, 30);
+    background: rgb(220, 230, 230);
+  }
+}

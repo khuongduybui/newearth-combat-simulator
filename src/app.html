@@ -1,0 +1,210 @@
+<template>
+  <require from="elements/aurelia-console"></require>
+  <require from="./app.css"></require>
+
+  <h1>Player vs Aliens</h1>
+
+  <h2>Configure</h2>
+
+  <h3>Base</h3>
+  <table>
+    <tr>
+      <td>
+        <label>
+          Air Vehicle Attack
+          <input type="number" value.two-way="buffs.attack" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Air Vehicle Defense
+          <input type="number" value.two-way="buffs.defense" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Air Vehicle Health
+          <input type="number" value.two-way="buffs.health" />
+        </label>
+      </td>
+    </tr>
+  </table>
+
+  <table>
+    <h3>Extras</h3>
+    <tr>
+      <td>
+        <label>
+          Attack Buff (Item)
+          <input type="number" value.two-way="buffs.attackItem" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Defense Buff (Item)
+          <input type="number" value.two-way="buffs.defenseItem" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Combat Ship
+          <input type="number" value.two-way="buffs.combatShip" />
+        </label>
+      </td>
+    </tr>
+  </table>
+
+  <h3>Hero</h3>
+  <table>
+    <tr>
+      <td>
+        <label>
+          Attack
+          <input type="number" value.two-way="hero.attack" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Defense
+          <input type="number" value.two-way="hero.defense" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Health
+          <input type="number" value.two-way="hero.health" />
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>
+          Air Vehicle Attack
+          <input type="number" value.two-way="hero.attackBuff" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Air Vehicle Defense
+          <input type="number" value.two-way="hero.defenseBuff" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Air Vehicle Health
+          <input type="number" value.two-way="hero.healthBuff" />
+        </label>
+      </td>
+    </tr>
+  </table>
+
+  <h3>Troops</h3>
+  <table>
+    <tr>
+      <td>
+        <label>
+          Scout Helicopters
+          <input type="number" value.two-way="troop1.qty" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Attack Helicopters
+          <input type="number" value.two-way="troop2.qty" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Jet Fighters
+          <input type="number" value.two-way="troop3.qty" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Advanced Interceptors
+          <input type="number" value.two-way="troop4.qty" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Solarwind Fighters
+          <input type="number" value.two-way="troop5.qty" />
+        </label>
+      </td>
+    </tr>
+  </table>
+
+  <h3>Alien Activities / Hives / Dropships</h3>
+  <table>
+    <tr>
+      <td>
+        <label>
+          Greys
+          <input type="number" value.two-way="aat1.qty" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Bashers
+          <input type="number" value.two-way="aat2.qty" />
+        </label>
+      </td>
+      <td>
+        <label>
+          UFOs
+          <input type="number" value.two-way="aat3.qty" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Destroyers
+          <input type="number" value.two-way="aat4.qty" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Masterminds
+          <input type="number" value.two-way="aat5.qty" />
+        </label>
+      </td>
+    </tr>
+  </table>
+
+  <h3>Scavengers / Dark Activity</h3>
+  <table>
+    <tr>
+      <td>
+        <label>
+          Veteran Scavengers
+          <input type="number" value.two-way="sat3.qty" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Elite Scavengers
+          <input type="number" value.two-way="sat4.qty" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Veteran Black Ops
+          <input type="number" value.two-way="dat3.qty" />
+        </label>
+      </td>
+      <td>
+        <label>
+          Elite Black Ops
+          <input type="number" value.two-way="dat4.qty" />
+        </label>
+      </td>
+    </tr>
+  </table>
+
+  <h2>Simulation</h2>
+
+  <button click.delegate="heroVsAa()">Hero Only</button>
+  <button click.delegate="troopsVsAa()">Troops Only</button>
+  <button click.delegate="allVsAa()">Hero + Troops</button>
+
+  <aurelia-console if.bind="battleLogs.length" logs.bind="battleLogs"></aurelia-console>
+</template>

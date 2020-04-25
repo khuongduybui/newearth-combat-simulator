@@ -1,0 +1,15 @@
+<template>
+  <require from="./aurelia-console.css"></require>
+
+  <div class="console-output">
+    <div>
+      <template repeat.for="log of logs">
+        <p class="${log.left ? 'left' : ''} ${log.center ? 'center' : ''} ${log.right ? 'right' : ''}">
+          <span if.bind="log.left || log.center">&gt;</span>
+          ${log.message}
+          <span if.bind="log.right || log.center">&lt;</span>
+        </p>
+      </template>
+    </div>
+  </div>
+</template>
