@@ -5,8 +5,8 @@ export class App {
 
   buffs = {
     attack: 0.75,
-    defense: 1.5066,
-    health: 0.51,
+    defense: 1.5466,
+    health: 0.52,
     attackItem: 0,
     defenseItem: 0,
     combatShip: 0.2,
@@ -15,7 +15,7 @@ export class App {
     name: 'hero',
     qty: 1,
     tier: 0,
-    attack: 9500,
+    attack: 19500,
     defense: 100,
     health: 245,
     attackBuff: 0.56,
