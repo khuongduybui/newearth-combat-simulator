@@ -21,6 +21,8 @@ export class App {
     attackBuff: 0.56,
     defenseBuff: 1.2,
     healthBuff: 0.5,
+    item: true,
+    ship: true,
   };
   aat1 = {
     name: 'Greys',
