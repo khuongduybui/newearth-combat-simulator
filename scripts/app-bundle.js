@@ -13,21 +13,21 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
     function App() {
       this.battleLogs = [];
       this.buffs = {
-        attack: 0.75,
-        defense: 1.5466,
+        attack: 1.16,
+        defense: 1.7566,
         health: 0.52,
-        attackItem: 0,
-        defenseItem: 0,
+        attackItem: 0.25,
+        defenseItem: 0.25,
         combatShip: 0.2
       };
       this.hero = {
         name: 'hero',
         qty: 1,
         tier: 0,
-        attack: 19500,
+        attack: 20000,
         defense: 100,
-        health: 245,
-        attackBuff: 0.56,
+        health: 250,
+        attackBuff: 0.72,
         defenseBuff: 1.2,
         healthBuff: 0.5,
         attackItem: 0.1,
