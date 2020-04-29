@@ -21,6 +21,9 @@ export class App {
     attackBuff: 0.56,
     defenseBuff: 1.2,
     healthBuff: 0.5,
+    attackItem: 0.1,
+    defenseItem: 0.05,
+    healthItem: 0,
     item: true,
     ship: true,
   };
@@ -231,6 +234,9 @@ export class App {
       }
       if (attacker.item) {
         attackBuff = attackBuff + +this.buffs.attackItem;
+        if (this.withHero(attackers)) {
+          attackBuff = attackBuff + +this.hero.attackItem;
+        }
       }
       if (attacker.ship) {
         attackBuff = attackBuff + +this.buffs.combatShip;
@@ -254,6 +260,10 @@ export class App {
         }
         if (defender.item) {
           defendBuff = defendBuff + +this.buffs.defenseItem;
+          if (this.withHero(attackers)) {
+            defendBuff = defendBuff + +this.hero.defenseItem;
+            healthBuff = healthBuff + +this.hero.healthItem;
+          }
         }
         if (defender.ship) {
           defendBuff = defendBuff + +this.buffs.combatShip;
