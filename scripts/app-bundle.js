@@ -24,14 +24,14 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
         name: 'hero',
         qty: 1,
         tier: 0,
-        attack: 20500,
-        defense: 104,
+        attack: 30500,
+        defense: 120,
         health: 287,
         attackBuff: 0.03,
         defenseBuff: 1.2,
         healthBuff: 0.5,
-        attackItem: 0.1,
-        defenseItem: 0,
+        attackItem: 0.15,
+        defenseItem: 0.05,
         healthItem: 0.05,
         item: true,
         ship: true
@@ -231,8 +231,54 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
       this.aa([_extends({}, this.troop1), _extends({}, this.troop2), _extends({}, this.troop3), _extends({}, this.troop4), _extends({}, this.troop5), _extends({}, this.hero)], this.defenders());
     };
 
+    _proto.saveData = function saveData() {
+      var data = {
+        buffs: this.buffs,
+        hero: this.hero,
+        aat1: this.aat1,
+        aat2: this.aat2,
+        aat3: this.aat3,
+        aat4: this.aat4,
+        aat5: this.aat5,
+        dat3: this.dat3,
+        dat4: this.dat4,
+        sat3: this.sat3,
+        sat4: this.sat4,
+        troop1: this.troop1,
+        troop2: this.troop2,
+        troop3: this.troop3,
+        troop4: this.troop4,
+        troop5: this.troop5
+      };
+      localStorage.setItem('data', JSON.stringify(data));
+    };
+
+    _proto.loadData = function loadData() {
+      var saved = localStorage.getItem('data');
+
+      if (saved) {
+        var data = JSON.parse(saved);
+        this.buffs = data.buffs;
+        this.hero = data.hero;
+        this.aat1 = data.aat1;
+        this.aat2 = data.aat2;
+        this.aat3 = data.aat3;
+        this.aat4 = data.aat4;
+        this.aat5 = data.aat5;
+        this.dat3 = data.dat3;
+        this.dat4 = data.dat4;
+        this.sat3 = data.sat3;
+        this.sat4 = data.sat4;
+        this.troop1 = data.troop1;
+        this.troop2 = data.troop2;
+        this.troop3 = data.troop3;
+        this.troop4 = data.troop4;
+        this.troop5 = data.troop5;
+      }
+    };
+
     _proto.aa = function aa(attackers, defenders) {
-      console.log(this.buffs);
+      this.saveData();
       this.clearLogs();
       this.status(this.remainings(attackers), this.remainings(defenders), 'Battle Start');
       this.aaRound(this.remainings(attackers), this.remainings(defenders), 1);
@@ -392,7 +438,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
   _exports.App = App;
 });;
 define('text!app.css',[],function(){return "body {\n  max-width: initial;\n}";});;
-define('text!app.html',[],function(){return "<template>\n  <require from=\"elements/aurelia-console\"></require>\n  <require from=\"./app.css\"></require>\n\n  <h1>Player vs Aliens</h1>\n\n  <h2>Configure</h2>\n\n  <h3>Base</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Air Vehicle Attack\n          <input type=\"number\" value.two-way=\"buffs.attack\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Defense\n          <input type=\"number\" value.two-way=\"buffs.defense\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Health\n          <input type=\"number\" value.two-way=\"buffs.health\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <table>\n    <h3>Extras</h3>\n    <tr>\n      <td>\n        <label>\n          Attack Buff (Item)\n          <input type=\"number\" value.two-way=\"buffs.attackItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Defense Buff (Item)\n          <input type=\"number\" value.two-way=\"buffs.defenseItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Combat Ship\n          <input type=\"number\" value.two-way=\"buffs.combatShip\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Hero</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Attack\n          <input type=\"number\" value.two-way=\"hero.attack\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Defense\n          <input type=\"number\" value.two-way=\"hero.defense\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Health\n          <input type=\"number\" value.two-way=\"hero.health\" />\n        </label>\n      </td>\n    </tr>\n    <tr>\n      <td>\n        <label>\n          Air Vehicle Attack\n          <input type=\"number\" value.two-way=\"hero.attackBuff\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Defense\n          <input type=\"number\" value.two-way=\"hero.defenseBuff\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Health\n          <input type=\"number\" value.two-way=\"hero.healthBuff\" />\n        </label>\n      </td>\n    </tr>\n    <tr>\n      <td>\n        <label>\n          Deployment Attack\n          <input type=\"number\" value.two-way=\"hero.attackItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Deployment Defense\n          <input type=\"number\" value.two-way=\"hero.defenseItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Deployment Health\n          <input type=\"number\" value.two-way=\"hero.healthItem\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Troops</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Scout Helicopters\n          <input type=\"number\" value.two-way=\"troop1.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop1.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Attack Helicopters\n          <input type=\"number\" value.two-way=\"troop2.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop2.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Jet Fighters\n          <input type=\"number\" value.two-way=\"troop3.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop3.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Advanced Interceptors\n          <input type=\"number\" value.two-way=\"troop4.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop4.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Solarwind Fighters\n          <input type=\"number\" value.two-way=\"troop5.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop5.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Alien Activities / Hives / Dropships</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Greys\n          <input type=\"number\" value.two-way=\"aat1.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Bashers\n          <input type=\"number\" value.two-way=\"aat2.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          UFOs\n          <input type=\"number\" value.two-way=\"aat3.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Destroyers\n          <input type=\"number\" value.two-way=\"aat4.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Masterminds\n          <input type=\"number\" value.two-way=\"aat5.qty\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Scavengers / Dark Activity</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Veteran Scavengers\n          <input type=\"number\" value.two-way=\"sat3.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Elite Scavengers\n          <input type=\"number\" value.two-way=\"sat4.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Veteran Black Ops\n          <input type=\"number\" value.two-way=\"dat3.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Elite Black Ops\n          <input type=\"number\" value.two-way=\"dat4.qty\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Simulation</h2>\n\n  <button click.delegate=\"heroVsAa()\">Hero Only</button>\n  <button click.delegate=\"troopsVsAa()\">Troops Only</button>\n  <button click.delegate=\"allVsAa()\">Hero + Troops</button>\n\n  <aurelia-console if.bind=\"battleLogs.length\" logs.bind=\"battleLogs\"></aurelia-console>\n</template>\n";});;
+define('text!app.html',[],function(){return "<template>\n  <require from=\"elements/aurelia-console\"></require>\n  <require from=\"./app.css\"></require>\n\n  <h1>Player vs Aliens</h1>\n\n  <h2>Configure</h2>\n  <button type=\"button\" click.delegate=\"loadData\">Load Saved Data</button>\n\n  <h3>Base</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Air Vehicle Attack\n          <input type=\"number\" value.two-way=\"buffs.attack\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Defense\n          <input type=\"number\" value.two-way=\"buffs.defense\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Health\n          <input type=\"number\" value.two-way=\"buffs.health\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <table>\n    <h3>Extras</h3>\n    <tr>\n      <td>\n        <label>\n          Attack Buff (Item)\n          <input type=\"number\" value.two-way=\"buffs.attackItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Defense Buff (Item)\n          <input type=\"number\" value.two-way=\"buffs.defenseItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Combat Ship\n          <input type=\"number\" value.two-way=\"buffs.combatShip\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Hero</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Attack\n          <input type=\"number\" value.two-way=\"hero.attack\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Defense\n          <input type=\"number\" value.two-way=\"hero.defense\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Health\n          <input type=\"number\" value.two-way=\"hero.health\" />\n        </label>\n      </td>\n    </tr>\n    <tr>\n      <td>\n        <label>\n          Air Vehicle Attack\n          <input type=\"number\" value.two-way=\"hero.attackBuff\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Defense\n          <input type=\"number\" value.two-way=\"hero.defenseBuff\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Health\n          <input type=\"number\" value.two-way=\"hero.healthBuff\" />\n        </label>\n      </td>\n    </tr>\n    <tr>\n      <td>\n        <label>\n          Deployment Attack\n          <input type=\"number\" value.two-way=\"hero.attackItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Deployment Defense\n          <input type=\"number\" value.two-way=\"hero.defenseItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Deployment Health\n          <input type=\"number\" value.two-way=\"hero.healthItem\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Troops</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Scout Helicopters\n          <input type=\"number\" value.two-way=\"troop1.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop1.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Attack Helicopters\n          <input type=\"number\" value.two-way=\"troop2.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop2.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Jet Fighters\n          <input type=\"number\" value.two-way=\"troop3.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop3.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Advanced Interceptors\n          <input type=\"number\" value.two-way=\"troop4.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop4.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Solarwind Fighters\n          <input type=\"number\" value.two-way=\"troop5.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop5.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Alien Activities / Hives / Dropships</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Greys\n          <input type=\"number\" value.two-way=\"aat1.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Bashers\n          <input type=\"number\" value.two-way=\"aat2.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          UFOs\n          <input type=\"number\" value.two-way=\"aat3.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Destroyers\n          <input type=\"number\" value.two-way=\"aat4.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Masterminds\n          <input type=\"number\" value.two-way=\"aat5.qty\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Scavengers / Dark Activity</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Veteran Scavengers\n          <input type=\"number\" value.two-way=\"sat3.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Elite Scavengers\n          <input type=\"number\" value.two-way=\"sat4.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Veteran Black Ops\n          <input type=\"number\" value.two-way=\"dat3.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Elite Black Ops\n          <input type=\"number\" value.two-way=\"dat4.qty\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Simulation</h2>\n\n  <button click.delegate=\"heroVsAa()\">Hero Only</button>\n  <button click.delegate=\"troopsVsAa()\">Troops Only</button>\n  <button click.delegate=\"allVsAa()\">Hero + Troops</button>\n\n  <aurelia-console if.bind=\"battleLogs.length\" logs.bind=\"battleLogs\"></aurelia-console>\n</template>\n";});;
 define('elements/aurelia-console',["exports", "aurelia-framework"], function (_exports, _aureliaFramework) {
   "use strict";
 

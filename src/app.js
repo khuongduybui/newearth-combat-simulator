@@ -15,14 +15,14 @@ export class App {
     name: 'hero',
     qty: 1,
     tier: 0,
-    attack: 20500,
-    defense: 104,
+    attack: 30500,
+    defense: 120,
     health: 287,
     attackBuff: 0.03,
     defenseBuff: 1.2,
     healthBuff: 0.5,
-    attackItem: 0.1,
-    defenseItem: 0,
+    attackItem: 0.15,
+    defenseItem: 0.05,
     healthItem: 0.05,
     item: true,
     ship: true,
@@ -209,8 +209,54 @@ export class App {
     this.aa([{ ...this.troop1 }, { ...this.troop2 }, { ...this.troop3 }, { ...this.troop4 }, { ...this.troop5 }, { ...this.hero }], this.defenders());
   }
 
+  saveData() {
+    const data = {
+      buffs: this.buffs,
+      hero: this.hero,
+      aat1: this.aat1,
+      aat2: this.aat2,
+      aat3: this.aat3,
+      aat4: this.aat4,
+      aat5: this.aat5,
+      dat3: this.dat3,
+      dat4: this.dat4,
+      sat3: this.sat3,
+      sat4: this.sat4,
+      troop1: this.troop1,
+      troop2: this.troop2,
+      troop3: this.troop3,
+      troop4: this.troop4,
+      troop5: this.troop5,
+    };
+    localStorage.setItem('data', JSON.stringify(data));
+  }
+
+  loadData() {
+    const saved = localStorage.getItem('data');
+    if (saved) {
+      const data = JSON.parse(saved);
+
+      this.buffs = data.buffs;
+      this.hero = data.hero;
+      this.aat1 = data.aat1;
+      this.aat2 = data.aat2;
+      this.aat3 = data.aat3;
+      this.aat4 = data.aat4;
+      this.aat5 = data.aat5;
+      this.dat3 = data.dat3;
+      this.dat4 = data.dat4;
+      this.sat3 = data.sat3;
+      this.sat4 = data.sat4;
+      this.troop1 = data.troop1;
+      this.troop2 = data.troop2;
+      this.troop3 = data.troop3;
+      this.troop4 = data.troop4;
+      this.troop5 = data.troop5;
+    }
+  }
+
   aa(attackers, defenders) {
-    console.log(this.buffs);
+    this.saveData();
     this.clearLogs();
 
     this.status(this.remainings(attackers), this.remainings(defenders), 'Battle Start');
