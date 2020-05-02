@@ -4,8 +4,8 @@ export class App {
   battleLogs = [];
 
   buffs = {
-    attack: 1.16,
-    defense: 1.7566,
+    attack: 0.22,
+    defense: 1.5133,
     health: 0.52,
     attackItem: 0.25,
     defenseItem: 0.25,
@@ -15,15 +15,15 @@ export class App {
     name: 'hero',
     qty: 1,
     tier: 0,
-    attack: 20000,
-    defense: 100,
-    health: 250,
-    attackBuff: 0.72,
+    attack: 20500,
+    defense: 104,
+    health: 287,
+    attackBuff: 0.03,
     defenseBuff: 1.2,
     healthBuff: 0.5,
     attackItem: 0.1,
-    defenseItem: 0.05,
-    healthItem: 0,
+    defenseItem: 0,
+    healthItem: 0.05,
     item: true,
     ship: true,
   };
