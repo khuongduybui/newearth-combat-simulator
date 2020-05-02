@@ -58,7 +58,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
         tier: 3,
         attack: 2,
         defense: 3,
-        health: 4
+        health: 3
       };
       this.aat4 = {
         name: 'Destroyers',

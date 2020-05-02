@@ -49,7 +49,7 @@ export class App {
     tier: 3,
     attack: 2,
     defense: 3,
-    health: 4,
+    health: 3,
   };
   aat4 = {
     name: 'Destroyers',
