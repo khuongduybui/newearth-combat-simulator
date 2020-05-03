@@ -248,21 +248,21 @@ export class App {
 
       this.buffs = data.buffs;
       this.hero = data.hero;
-      this.aat1 = data.aat1;
-      this.aat2 = data.aat2;
-      this.aat3 = data.aat3;
-      this.aat4 = data.aat4;
-      this.aat5 = data.aat5;
-      this.dat3 = data.dat3;
-      this.dat4 = data.dat4;
-      this.sat2 = data.sat2;
-      this.sat3 = data.sat3;
-      this.sat4 = data.sat4;
-      this.troop1 = data.troop1;
-      this.troop2 = data.troop2;
-      this.troop3 = data.troop3;
-      this.troop4 = data.troop4;
-      this.troop5 = data.troop5;
+      this.aat1.qty = data.aat1.qty;
+      this.aat2.qty = data.aat2.qty;
+      this.aat3.qty = data.aat3.qty;
+      this.aat4.qty = data.aat4.qty;
+      this.aat5.qty = data.aat5.qty;
+      this.dat3.qty = data.dat3.qty;
+      this.dat4.qty = data.dat4.qty;
+      this.sat2.qty = data.sat2.qty;
+      this.sat3.qty = data.sat3.qty;
+      this.sat4.qty = data.sat4.qty;
+      this.troop1.qty = data.troop1.qty;
+      this.troop2.qty = data.troop2.qty;
+      this.troop3.qty = data.troop3.qty;
+      this.troop4.qty = data.troop4.qty;
+      this.troop5.qty = data.troop5.qty;
     }
   }
 
