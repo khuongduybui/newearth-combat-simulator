@@ -276,7 +276,7 @@ export class App {
     this.aaRound(this.remainings(attackers), this.remainings(defenders), 2);
     this.aaRound(this.remainings(attackers), this.remainings(defenders), 3);
 
-    this.status(this.remainings(attackers), this.remainings(defenders), 'Battle End');
+    this.statusWithLoss(this.remainings(attackers), this.remainings(defenders), 'Battle End');
   }
 
   attack(attackers, defenders) {
@@ -291,7 +291,7 @@ export class App {
       }
       if (attacker.item) {
         attackBuff = attackBuff + +this.buffs.attackItem;
-        if (this.withHero(attackers)) {
+        if (this.withHero(attackers) && !this.isHero(attacker)) {
           attackBuff = attackBuff + +this.hero.attackItem;
         }
       }
@@ -300,7 +300,7 @@ export class App {
       }
 
       attacker.firepower = attacker.qty * attacker.attack * (1 + attackBuff) * 0.2;
-      this.logAttack(attacker.name, 'firepower', attacker.firepower, ...(attackBuff > 0 ? ['including attack buff', attackBuff * 100, '%'] : []));
+      this.logAttack(attacker.name, '🔥', attacker.firepower, ...(attackBuff > 0 ? ['including attack buff', attackBuff * 100, '%'] : []));
 
       this.remainings(defenders).every((defender) => {
         const tierRatio = this.tierRatios[attacker.tier][defender.tier];
@@ -317,7 +317,7 @@ export class App {
         }
         if (defender.item) {
           defendBuff = defendBuff + +this.buffs.defenseItem;
-          if (this.withHero(attackers)) {
+          if (this.withHero(defenders) && !this.isHero(defender)) {
             defendBuff = defendBuff + +this.hero.defenseItem;
             healthBuff = healthBuff + +this.hero.healthItem;
           }
@@ -326,12 +326,16 @@ export class App {
           defendBuff = defendBuff + +this.buffs.combatShip;
           healthBuff = healthBuff + +this.buffs.combatShip;
         }
-        defender.hitpoints = defender.hitpoints ?? defender.qty * defender.health * defender.defense * (1 + defendBuff) * (1 + healthBuff);
+        if (!defender.hitpoints) {
+          defender.hitpoints = defender.qty * defender.health * defender.defense * (1 + defendBuff) * (1 + healthBuff);
+          defender.originalHitpoints = defender.hitpoints;
+          defender.originalQty = defender.qty;
+        }
         this.logDefend(
           defender.name,
-          'qty',
+          '👨‍👦‍👦',
           defender.qty,
-          'hitpoints',
+          '❤',
           defender.hitpoints,
           'damage',
           tierRatio >= 1 ? 'amplified by' : 'reduced by',
@@ -351,8 +355,8 @@ export class App {
           defender.qty = 0;
           attacker.firepower = (damage - defender.hit) / tierRatio;
         }
-        this.logDefend(defender.name, 'took', defender.hit, 'damage, remaining qty', defender.qty, 'hitpoints', defender.hitpoints);
-        this.logAttack(attacker.name, 'remaining firepower', attacker.firepower);
+        this.logDefend(defender.name, 'took 🎯', defender.hit, ', remaining 👨‍👦‍👦', defender.qty, '❤', defender.hitpoints);
+        this.logAttack(attacker.name, 'remaining 🔥', attacker.firepower);
 
         // does this attacker has firepower left?
         return attacker.firepower > 0;
@@ -375,22 +379,20 @@ export class App {
   }
 
   status(attackers, defenders, ...message) {
+    return this._status(attackers, defenders, false, ...message);
+  }
+
+  statusWithLoss(attackers, defenders, ...message) {
+    return this._status(attackers, defenders, true, ...message);
+  }
+
+  _status(attackers, defenders, loss, ...message) {
     this.header(...message);
     attackers.forEach((attacker) => {
-      this.logAttack(
-        attacker.name,
-        'qty',
-        attacker.qty,
-        ...(attacker.hitpoints && attacker.name === 'hero' ? ['% health', (attacker.hitpoints / attacker.defense / attacker.health) * 100, '%'] : []),
-      );
+      this.logAttack(attacker.name, '👨‍👦‍👦', attacker.qty, ...(loss ? this.loss(attacker) : []));
     });
     defenders.forEach((defender) => {
-      this.logDefend(
-        defender.name,
-        'qty',
-        defender.qty,
-        ...(defender.hitpoints && defender.name === 'hero' ? ['health', (defender.hitpoints / defender.defense / defender.health) * 100, '%'] : []),
-      );
+      this.logDefend(defender.name, '👨‍👦‍👦', defender.qty, ...(loss ? this.loss(defender) : []));
     });
   }
 
@@ -399,7 +401,45 @@ export class App {
   }
 
   withHero(side) {
-    return side.some(({ name }) => name === 'hero');
+    return side.some(this.isHero);
+  }
+
+  isHero(entity) {
+    return entity.name === 'hero';
+  }
+
+  loss(entity) {
+    if (this.isHero(entity)) {
+      if (entity.hitpoints && entity.originalHitpoints) {
+        return ['❤', (entity.hitpoints / entity.originalHitpoints) * 100, '%'];
+      }
+    } else {
+      if (entity.originalQty) {
+        return ['🔻', entity.originalQty - entity.qty, '⚡', this.powerLoss(entity)];
+      }
+    }
+  }
+
+  powerLoss(entity) {
+    let power = 0;
+    switch (entity.tier) {
+      case 1:
+        power = 2;
+        break;
+      case 2:
+        power = 8;
+        break;
+      case 3:
+        power = 20;
+        break;
+      case 4:
+        power = 36;
+        break;
+      case 5:
+        power = 75;
+        break;
+    }
+    return power * (entity.originalQty - entity.qty);
   }
 
   aaRound(attackers, defenders, number) {

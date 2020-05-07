@@ -269,21 +269,21 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
         var data = JSON.parse(saved);
         this.buffs = data.buffs;
         this.hero = data.hero;
-        this.aat1 = data.aat1;
-        this.aat2 = data.aat2;
-        this.aat3 = data.aat3;
-        this.aat4 = data.aat4;
-        this.aat5 = data.aat5;
-        this.dat3 = data.dat3;
-        this.dat4 = data.dat4;
-        this.sat2 = data.sat2;
-        this.sat3 = data.sat3;
-        this.sat4 = data.sat4;
-        this.troop1 = data.troop1;
-        this.troop2 = data.troop2;
-        this.troop3 = data.troop3;
-        this.troop4 = data.troop4;
-        this.troop5 = data.troop5;
+        this.aat1.qty = data.aat1.qty;
+        this.aat2.qty = data.aat2.qty;
+        this.aat3.qty = data.aat3.qty;
+        this.aat4.qty = data.aat4.qty;
+        this.aat5.qty = data.aat5.qty;
+        this.dat3.qty = data.dat3.qty;
+        this.dat4.qty = data.dat4.qty;
+        this.sat2.qty = data.sat2.qty;
+        this.sat3.qty = data.sat3.qty;
+        this.sat4.qty = data.sat4.qty;
+        this.troop1.qty = data.troop1.qty;
+        this.troop2.qty = data.troop2.qty;
+        this.troop3.qty = data.troop3.qty;
+        this.troop4.qty = data.troop4.qty;
+        this.troop5.qty = data.troop5.qty;
       }
     };
 
@@ -294,7 +294,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
       this.aaRound(this.remainings(attackers), this.remainings(defenders), 1);
       this.aaRound(this.remainings(attackers), this.remainings(defenders), 2);
       this.aaRound(this.remainings(attackers), this.remainings(defenders), 3);
-      this.status(this.remainings(attackers), this.remainings(defenders), 'Battle End');
+      this.statusWithLoss(this.remainings(attackers), this.remainings(defenders), 'Battle End');
     };
 
     _proto.attack = function attack(attackers, defenders) {
@@ -315,7 +315,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
         if (attacker.item) {
           attackBuff = attackBuff + +_this.buffs.attackItem;
 
-          if (_this.withHero(attackers)) {
+          if (_this.withHero(attackers) && !_this.isHero(attacker)) {
             attackBuff = attackBuff + +_this.hero.attackItem;
           }
         }
@@ -326,11 +326,9 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
 
         attacker.firepower = attacker.qty * attacker.attack * (1 + attackBuff) * 0.2;
 
-        _this.logAttack.apply(_this, [attacker.name, 'firepower', attacker.firepower].concat(attackBuff > 0 ? ['including attack buff', attackBuff * 100, '%'] : []));
+        _this.logAttack.apply(_this, [attacker.name, '🔥', attacker.firepower].concat(attackBuff > 0 ? ['including attack buff', attackBuff * 100, '%'] : []));
 
         _this.remainings(defenders).every(function (defender) {
-          var _defender$hitpoints;
-
           var tierRatio = _this.tierRatios[attacker.tier][defender.tier];
           var damage = attacker.firepower * tierRatio;
           var defendBuff = 0,
@@ -349,7 +347,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
           if (defender.item) {
             defendBuff = defendBuff + +_this.buffs.defenseItem;
 
-            if (_this.withHero(attackers)) {
+            if (_this.withHero(defenders) && !_this.isHero(defender)) {
               defendBuff = defendBuff + +_this.hero.defenseItem;
               healthBuff = healthBuff + +_this.hero.healthItem;
             }
@@ -360,9 +358,13 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
             healthBuff = healthBuff + +_this.buffs.combatShip;
           }
 
-          defender.hitpoints = (_defender$hitpoints = defender.hitpoints) != null ? _defender$hitpoints : defender.qty * defender.health * defender.defense * (1 + defendBuff) * (1 + healthBuff);
+          if (!defender.hitpoints) {
+            defender.hitpoints = defender.qty * defender.health * defender.defense * (1 + defendBuff) * (1 + healthBuff);
+            defender.originalHitpoints = defender.hitpoints;
+            defender.originalQty = defender.qty;
+          }
 
-          _this.logDefend.apply(_this, [defender.name, 'qty', defender.qty, 'hitpoints', defender.hitpoints, 'damage', tierRatio >= 1 ? 'amplified by' : 'reduced by', tierRatio].concat(defendBuff > 0 ? ['including defend buff', defendBuff * 100, '%'] : [], healthBuff > 0 ? ['including health buff', healthBuff * 100, '%'] : []));
+          _this.logDefend.apply(_this, [defender.name, '👨‍👦‍👦', defender.qty, '❤', defender.hitpoints, 'damage', tierRatio >= 1 ? 'amplified by' : 'reduced by', tierRatio].concat(defendBuff > 0 ? ['including defend buff', defendBuff * 100, '%'] : [], healthBuff > 0 ? ['including health buff', healthBuff * 100, '%'] : []));
 
           if (defender.hitpoints > damage) {
             attacker.firepower = 0;
@@ -376,9 +378,9 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
             attacker.firepower = (damage - defender.hit) / tierRatio;
           }
 
-          _this.logDefend(defender.name, 'took', defender.hit, 'damage, remaining qty', defender.qty, 'hitpoints', defender.hitpoints);
+          _this.logDefend(defender.name, 'took 🎯', defender.hit, ', remaining 👨‍👦‍👦', defender.qty, '❤', defender.hitpoints);
 
-          _this.logAttack(attacker.name, 'remaining firepower', attacker.firepower); // does this attacker has firepower left?
+          _this.logAttack(attacker.name, 'remaining 🔥', attacker.firepower); // does this attacker has firepower left?
 
 
           return attacker.firepower > 0;
@@ -406,18 +408,34 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
     };
 
     _proto.status = function status(attackers, defenders) {
-      var _this2 = this;
-
       for (var _len3 = arguments.length, message = new Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
         message[_key3 - 2] = arguments[_key3];
       }
 
+      return this._status.apply(this, [attackers, defenders, false].concat(message));
+    };
+
+    _proto.statusWithLoss = function statusWithLoss(attackers, defenders) {
+      for (var _len4 = arguments.length, message = new Array(_len4 > 2 ? _len4 - 2 : 0), _key4 = 2; _key4 < _len4; _key4++) {
+        message[_key4 - 2] = arguments[_key4];
+      }
+
+      return this._status.apply(this, [attackers, defenders, true].concat(message));
+    };
+
+    _proto._status = function _status(attackers, defenders, loss) {
+      var _this2 = this;
+
+      for (var _len5 = arguments.length, message = new Array(_len5 > 3 ? _len5 - 3 : 0), _key5 = 3; _key5 < _len5; _key5++) {
+        message[_key5 - 3] = arguments[_key5];
+      }
+
       this.header.apply(this, message);
       attackers.forEach(function (attacker) {
-        _this2.logAttack.apply(_this2, [attacker.name, 'qty', attacker.qty].concat(attacker.hitpoints && attacker.name === 'hero' ? ['% health', attacker.hitpoints / attacker.defense / attacker.health * 100, '%'] : []));
+        _this2.logAttack.apply(_this2, [attacker.name, '👨‍👦‍👦', attacker.qty].concat(loss ? _this2.loss(attacker) : []));
       });
       defenders.forEach(function (defender) {
-        _this2.logDefend.apply(_this2, [defender.name, 'qty', defender.qty].concat(defender.hitpoints && defender.name === 'hero' ? ['health', defender.hitpoints / defender.defense / defender.health * 100, '%'] : []));
+        _this2.logDefend.apply(_this2, [defender.name, '👨‍👦‍👦', defender.qty].concat(loss ? _this2.loss(defender) : []));
       });
     };
 
@@ -429,10 +447,51 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
     };
 
     _proto.withHero = function withHero(side) {
-      return side.some(function (_ref2) {
-        var name = _ref2.name;
-        return name === 'hero';
-      });
+      return side.some(this.isHero);
+    };
+
+    _proto.isHero = function isHero(entity) {
+      return entity.name === 'hero';
+    };
+
+    _proto.loss = function loss(entity) {
+      if (this.isHero(entity)) {
+        if (entity.hitpoints && entity.originalHitpoints) {
+          return ['❤', entity.hitpoints / entity.originalHitpoints * 100, '%'];
+        }
+      } else {
+        if (entity.originalQty) {
+          return ['🔻', entity.originalQty - entity.qty, '⚡', this.powerLoss(entity)];
+        }
+      }
+    };
+
+    _proto.powerLoss = function powerLoss(entity) {
+      var power = 0;
+
+      switch (entity.tier) {
+        case 1:
+          power = 2;
+          break;
+
+        case 2:
+          power = 8;
+          break;
+
+        case 3:
+          power = 20;
+          break;
+
+        case 4:
+          power = 36;
+          break;
+
+        case 5:
+          power = 75;
+          break;
+      }
+
+      return power * (entity.originalQty - entity.qty);
     };
 
     _proto.aaRound = function aaRound(attackers, defenders, number) {
