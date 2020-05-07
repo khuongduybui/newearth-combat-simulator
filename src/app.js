@@ -276,7 +276,7 @@ export class App {
     this.aaRound(this.remainings(attackers), this.remainings(defenders), 2);
     this.aaRound(this.remainings(attackers), this.remainings(defenders), 3);
 
-    this.statusWithLoss(this.remainings(attackers), this.remainings(defenders), 'Battle End');
+    this.statusWithLoss(this.remainings(attackers, true), this.remainings(defenders, true), 'Battle End');
   }
 
   attack(attackers, defenders) {
@@ -396,8 +396,8 @@ export class App {
     });
   }
 
-  remainings(side) {
-    return side.filter(({ qty }) => qty > 0);
+  remainings(side, loss) {
+    return side.filter(({ qty, originalQty }) => +qty > 0 || (loss && +originalQty > 0));
   }
 
   withHero(side) {

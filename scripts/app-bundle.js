@@ -294,7 +294,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
       this.aaRound(this.remainings(attackers), this.remainings(defenders), 1);
       this.aaRound(this.remainings(attackers), this.remainings(defenders), 2);
       this.aaRound(this.remainings(attackers), this.remainings(defenders), 3);
-      this.statusWithLoss(this.remainings(attackers), this.remainings(defenders), 'Battle End');
+      this.statusWithLoss(this.remainings(attackers, true), this.remainings(defenders, true), 'Battle End');
     };
 
     _proto.attack = function attack(attackers, defenders) {
@@ -439,10 +439,11 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
       });
     };
 
-    _proto.remainings = function remainings(side) {
+    _proto.remainings = function remainings(side, loss) {
       return side.filter(function (_ref) {
-        var qty = _ref.qty;
-        return qty > 0;
+        var qty = _ref.qty,
+            originalQty = _ref.originalQty;
+        return +qty > 0 || loss && +originalQty > 0;
       });
     };
 
