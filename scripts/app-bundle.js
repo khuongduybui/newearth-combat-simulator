@@ -240,7 +240,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
     };
 
     _proto.defenders = function defenders() {
-      return [_extends({}, this.aat1), _extends({}, this.aat2), _extends({}, this.aat3), _extends({}, this.aat4), _extends({}, this.aat5), _extends({}, this.sat2), _extends({}, this.sat3), _extends({}, this.sat4), _extends({}, this.dat1), _extends({}, this.dat), _extends({}, this.dat3), _extends({}, this.dat4)];
+      return [_extends({}, this.aat1), _extends({}, this.aat2), _extends({}, this.aat3), _extends({}, this.aat4), _extends({}, this.aat5), _extends({}, this.sat2), _extends({}, this.sat3), _extends({}, this.sat4), _extends({}, this.dat1), _extends({}, this.dat2), _extends({}, this.dat3), _extends({}, this.dat4)];
     };
 
     _proto.heroVsAa = function heroVsAa() {
@@ -256,9 +256,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
     };
 
     _proto.saveData = function saveData() {
-      var _data;
-
-      var data = (_data = {
+      var data = {
         buffs: this.buffs,
         hero: this.hero,
         aat1: this.aat1,
@@ -266,8 +264,19 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
         aat3: this.aat3,
         aat4: this.aat4,
         aat5: this.aat5,
-        dat3: this.dat1
-      }, _data["dat3"] = this.dat2, _data["dat3"] = this.dat3, _data.dat4 = this.dat4, _data.sat2 = this.sat2, _data.sat3 = this.sat3, _data.sat4 = this.sat4, _data.troop1 = this.troop1, _data.troop2 = this.troop2, _data.troop3 = this.troop3, _data.troop4 = this.troop4, _data.troop5 = this.troop5, _data);
+        dat1: this.dat1,
+        dat2: this.dat2,
+        dat3: this.dat3,
+        dat4: this.dat4,
+        sat2: this.sat2,
+        sat3: this.sat3,
+        sat4: this.sat4,
+        troop1: this.troop1,
+        troop2: this.troop2,
+        troop3: this.troop3,
+        troop4: this.troop4,
+        troop5: this.troop5
+      };
       localStorage.setItem('data', JSON.stringify(data));
     };
 
