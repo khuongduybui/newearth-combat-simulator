@@ -67,6 +67,22 @@ export class App {
     defense: 5,
     health: 5,
   };
+  dat1 = {
+    name: 'Recruited Black Ops',
+    qty: 0,
+    tier: 1,
+    attack: 1,
+    defense: 1,
+    health: 1,
+  };
+  dat2 = {
+    name: 'Superior Black Ops',
+    qty: 0,
+    tier: 2,
+    attack: 2,
+    defense: 2,
+    health: 1,
+  };
   dat3 = {
     name: 'Veteran Black Ops',
     qty: 0,
@@ -201,6 +217,8 @@ export class App {
       { ...this.sat2 },
       { ...this.sat3 },
       { ...this.sat4 },
+      { ...this.dat1 },
+      { ...this.dat },
       { ...this.dat3 },
       { ...this.dat4 },
     ];
@@ -227,6 +245,8 @@ export class App {
       aat3: this.aat3,
       aat4: this.aat4,
       aat5: this.aat5,
+      dat3: this.dat1,
+      dat3: this.dat2,
       dat3: this.dat3,
       dat4: this.dat4,
       sat2: this.sat2,
@@ -253,6 +273,8 @@ export class App {
       this.aat3.qty = data.aat3.qty;
       this.aat4.qty = data.aat4.qty;
       this.aat5.qty = data.aat5.qty;
+      this.dat1.qty = data.dat1.qty;
+      this.dat2.qty = data.dat2.qty;
       this.dat3.qty = data.dat3.qty;
       this.dat4.qty = data.dat4.qty;
       this.sat2.qty = data.sat2.qty;
