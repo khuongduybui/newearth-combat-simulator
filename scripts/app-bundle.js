@@ -304,6 +304,11 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
         this.troop3.qty = data.troop3.qty;
         this.troop4.qty = data.troop4.qty;
         this.troop5.qty = data.troop5.qty;
+        this.troop1.buff = data.troop1.buff;
+        this.troop2.buff = data.troop2.buff;
+        this.troop3.buff = data.troop3.buff;
+        this.troop4.buff = data.troop4.buff;
+        this.troop5.buff = data.troop5.buff;
       }
     };
 
