@@ -4,6 +4,8 @@ This project is bootstrapped by [aurelia-cli](https://github.com/aurelia/cli).
 
 For more information, go to https://aurelia.io/docs/cli/cli-bundler
 
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/khuongduybui/newearth-combat-simulator) 
+
 ## Run dev app
 
 Run `au run`, then open `http://localhost:9000`
