@@ -123,6 +123,14 @@ export class App {
     defense: 4,
     health: 3,
   };
+  sat5 = {
+    name: 'Epic Scavengers',
+    qty: 0,
+    tier: 5,
+    attack: 5,
+    defense: 5,
+    health: 4,
+  };
   troop1 = {
     name: 'Scout Helicopters',
     qty: 0,
@@ -217,6 +225,7 @@ export class App {
       { ...this.sat2 },
       { ...this.sat3 },
       { ...this.sat4 },
+      { ...this.sat5 },
       { ...this.dat1 },
       { ...this.dat2 },
       { ...this.dat3 },
@@ -252,6 +261,7 @@ export class App {
       sat2: this.sat2,
       sat3: this.sat3,
       sat4: this.sat4,
+      sat5: this.sat5,
       troop1: this.troop1,
       troop2: this.troop2,
       troop3: this.troop3,
@@ -280,6 +290,7 @@ export class App {
       this.sat2.qty = data.sat2.qty;
       this.sat3.qty = data.sat3.qty;
       this.sat4.qty = data.sat4.qty;
+      this.sat5.qty = data.sat5.qty;
       this.troop1.qty = data.troop1.qty;
       this.troop2.qty = data.troop2.qty;
       this.troop3.qty = data.troop3.qty;
