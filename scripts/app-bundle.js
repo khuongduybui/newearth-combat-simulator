@@ -293,32 +293,34 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
       var saved = localStorage.getItem('data');
 
       if (saved) {
+        var _data$aat, _data$aat2, _data$aat3, _data$aat4, _data$aat5, _data$dat, _data$dat2, _data$dat3, _data$dat4, _data$sat, _data$sat2, _data$sat3, _data$sat4, _data$troop, _data$troop2, _data$troop3, _data$troop4, _data$troop5, _data$troop6, _data$troop7, _data$troop8, _data$troop9, _data$troop10;
+
         var data = JSON.parse(saved);
         this.buffs = data.buffs;
         this.hero = data.hero;
-        this.aat1.qty = data.aat1.qty;
-        this.aat2.qty = data.aat2.qty;
-        this.aat3.qty = data.aat3.qty;
-        this.aat4.qty = data.aat4.qty;
-        this.aat5.qty = data.aat5.qty;
-        this.dat1.qty = data.dat1.qty;
-        this.dat2.qty = data.dat2.qty;
-        this.dat3.qty = data.dat3.qty;
-        this.dat4.qty = data.dat4.qty;
-        this.sat2.qty = data.sat2.qty;
-        this.sat3.qty = data.sat3.qty;
-        this.sat4.qty = data.sat4.qty;
-        this.sat5.qty = data.sat5.qty;
-        this.troop1.qty = data.troop1.qty;
-        this.troop2.qty = data.troop2.qty;
-        this.troop3.qty = data.troop3.qty;
-        this.troop4.qty = data.troop4.qty;
-        this.troop5.qty = data.troop5.qty;
-        this.troop1.buff = data.troop1.buff;
-        this.troop2.buff = data.troop2.buff;
-        this.troop3.buff = data.troop3.buff;
-        this.troop4.buff = data.troop4.buff;
-        this.troop5.buff = data.troop5.buff;
+        this.aat1.qty = data == null ? void 0 : (_data$aat = data.aat1) == null ? void 0 : _data$aat.qty;
+        this.aat2.qty = data == null ? void 0 : (_data$aat2 = data.aat2) == null ? void 0 : _data$aat2.qty;
+        this.aat3.qty = data == null ? void 0 : (_data$aat3 = data.aat3) == null ? void 0 : _data$aat3.qty;
+        this.aat4.qty = data == null ? void 0 : (_data$aat4 = data.aat4) == null ? void 0 : _data$aat4.qty;
+        this.aat5.qty = data == null ? void 0 : (_data$aat5 = data.aat5) == null ? void 0 : _data$aat5.qty;
+        this.dat1.qty = data == null ? void 0 : (_data$dat = data.dat1) == null ? void 0 : _data$dat.qty;
+        this.dat2.qty = data == null ? void 0 : (_data$dat2 = data.dat2) == null ? void 0 : _data$dat2.qty;
+        this.dat3.qty = data == null ? void 0 : (_data$dat3 = data.dat3) == null ? void 0 : _data$dat3.qty;
+        this.dat4.qty = data == null ? void 0 : (_data$dat4 = data.dat4) == null ? void 0 : _data$dat4.qty;
+        this.sat2.qty = data == null ? void 0 : (_data$sat = data.sat2) == null ? void 0 : _data$sat.qty;
+        this.sat3.qty = data == null ? void 0 : (_data$sat2 = data.sat3) == null ? void 0 : _data$sat2.qty;
+        this.sat4.qty = data == null ? void 0 : (_data$sat3 = data.sat4) == null ? void 0 : _data$sat3.qty;
+        this.sat5.qty = data == null ? void 0 : (_data$sat4 = data.sat5) == null ? void 0 : _data$sat4.qty;
+        this.troop1.qty = data == null ? void 0 : (_data$troop = data.troop1) == null ? void 0 : _data$troop.qty;
+        this.troop2.qty = data == null ? void 0 : (_data$troop2 = data.troop2) == null ? void 0 : _data$troop2.qty;
+        this.troop3.qty = data == null ? void 0 : (_data$troop3 = data.troop3) == null ? void 0 : _data$troop3.qty;
+        this.troop4.qty = data == null ? void 0 : (_data$troop4 = data.troop4) == null ? void 0 : _data$troop4.qty;
+        this.troop5.qty = data == null ? void 0 : (_data$troop5 = data.troop5) == null ? void 0 : _data$troop5.qty;
+        this.troop1.buff = data == null ? void 0 : (_data$troop6 = data.troop1) == null ? void 0 : _data$troop6.buff;
+        this.troop2.buff = data == null ? void 0 : (_data$troop7 = data.troop2) == null ? void 0 : _data$troop7.buff;
+        this.troop3.buff = data == null ? void 0 : (_data$troop8 = data.troop3) == null ? void 0 : _data$troop8.buff;
+        this.troop4.buff = data == null ? void 0 : (_data$troop9 = data.troop4) == null ? void 0 : _data$troop9.buff;
+        this.troop5.buff = data == null ? void 0 : (_data$troop10 = data.troop5) == null ? void 0 : _data$troop10.buff;
       }
     };
 
