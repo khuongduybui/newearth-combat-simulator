@@ -255,6 +255,6 @@
     Show Loss Only
   </label>  
 
-  <aurelia-console if.bind="lossOnly && battleLossLogs.length" logs.bind="battleLossLogs"></aurelia-console>
-  <aurelia-console if.bind="!lossOnly && battleLogs.length" logs.bind="battleLogs"></aurelia-console>
+  <aurelia-console if.bind="battleLossLogs.length && lossOnly" logs.bind="battleLossLogs"></aurelia-console>
+  <aurelia-console if.bind="battleLogs.length && !lossOnly" logs.bind="battleLogs"></aurelia-console>
 </template>

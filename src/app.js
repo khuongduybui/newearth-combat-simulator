@@ -200,6 +200,7 @@ export class App {
 
   clearLogs() {
     this.battleLogs = [];
+    this.battleLossLogs = [];
   }
   formatLog(...data) {
     return data.map((part) => (typeof part === 'number' ? numeral(part).format('0,0[.]00') : typeof part === 'string' ? part : JSON.stringify(part))).join(' ');
