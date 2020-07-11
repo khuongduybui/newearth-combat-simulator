@@ -11,28 +11,30 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
 
   var App = /*#__PURE__*/function () {
     function App() {
+      this.lossOnly = true;
+      this.battleLossLogs = [];
       this.battleLogs = [];
       this.buffs = {
-        attack: 0.22,
-        defense: 1.5133,
-        health: 0.52,
-        attackItem: 0.25,
-        defenseItem: 0.25,
-        combatShip: 0.2
+        attack: 0,
+        defense: 0,
+        health: 0,
+        attackItem: 0,
+        defenseItem: 0,
+        combatShip: 0
       };
       this.hero = {
         name: 'hero',
         qty: 1,
         tier: 0,
-        attack: 30500,
-        defense: 120,
-        health: 287,
-        attackBuff: 0.03,
-        defenseBuff: 1.2,
-        healthBuff: 0.5,
-        attackItem: 0.15,
-        defenseItem: 0.05,
-        healthItem: 0.05,
+        attack: 1000,
+        defense: 100,
+        health: 100,
+        attackBuff: 0,
+        defenseBuff: 0,
+        healthBuff: 0,
+        attackItem: 0,
+        defenseItem: 0,
+        healthItem: 0,
         item: true,
         ship: true
       };
@@ -164,7 +166,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
       };
       this.troop3 = {
         name: 'Jet Fighters',
-        qty: 800,
+        qty: 0,
         tier: 3,
         attack: 3,
         defense: 3,
@@ -175,7 +177,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
       };
       this.troop4 = {
         name: 'Advanced Interceptors',
-        qty: 92000,
+        qty: 0,
         tier: 4,
         attack: 4,
         defense: 4,
@@ -217,17 +219,39 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
       }).join(' ');
     };
 
-    _proto.logAttack = function logAttack() {
+    _proto.logAttack = function logAttack(loss) {
+      for (var _len2 = arguments.length, data = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        data[_key2 - 1] = arguments[_key2];
+      }
+
+      if (loss === false) {
+        this.battleLossLogs.push({
+          left: true,
+          message: this.formatLog.apply(this, data)
+        });
+      }
+
       this.battleLogs.push({
         left: true,
-        message: this.formatLog.apply(this, arguments)
+        message: this.formatLog.apply(this, data)
       });
     };
 
-    _proto.logDefend = function logDefend() {
+    _proto.logDefend = function logDefend(loss) {
+      for (var _len3 = arguments.length, data = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+        data[_key3 - 1] = arguments[_key3];
+      }
+
+      if (loss === false) {
+        this.battleLossLogs.push({
+          right: true,
+          message: this.formatLog.apply(this, data)
+        });
+      }
+
       this.battleLogs.push({
         right: true,
-        message: this.formatLog.apply(this, arguments)
+        message: this.formatLog.apply(this, data)
       });
     };
 
@@ -363,7 +387,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
 
         attacker.firepower = attacker.qty * attacker.attack * (1 + attackBuff) * 0.2;
 
-        _this.logAttack.apply(_this, [attacker.name, '🔥', attacker.firepower].concat(attackBuff > 0 ? ['including attack buff', attackBuff * 100, '%'] : []));
+        _this.logAttack.apply(_this, [false, attacker.name, '🔥', attacker.firepower].concat(attackBuff > 0 ? ['including attack buff', attackBuff * 100, '%'] : []));
 
         _this.remainings(defenders).every(function (defender) {
           var tierRatio = _this.tierRatios[attacker.tier][defender.tier];
@@ -401,7 +425,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
             defender.originalQty = defender.qty;
           }
 
-          _this.logDefend.apply(_this, [defender.name, '👨‍👦‍👦', defender.qty, '❤', defender.hitpoints, 'damage', tierRatio >= 1 ? 'amplified by' : 'reduced by', tierRatio].concat(defendBuff > 0 ? ['including defend buff', defendBuff * 100, '%'] : [], healthBuff > 0 ? ['including health buff', healthBuff * 100, '%'] : []));
+          _this.logDefend.apply(_this, [false, defender.name, '👨‍👦‍👦', defender.qty, '❤', defender.hitpoints, 'damage', tierRatio >= 1 ? 'amplified by' : 'reduced by', tierRatio].concat(defendBuff > 0 ? ['including defend buff', defendBuff * 100, '%'] : [], healthBuff > 0 ? ['including health buff', healthBuff * 100, '%'] : []));
 
           if (defender.hitpoints > damage) {
             attacker.firepower = 0;
@@ -415,9 +439,9 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
             attacker.firepower = (damage - defender.hit) / tierRatio;
           }
 
-          _this.logDefend(defender.name, 'took 🎯', defender.hit, ', remaining 👨‍👦‍👦', defender.qty, '❤', defender.hitpoints);
+          _this.logDefend(false, defender.name, 'took 🎯', defender.hit, ', remaining 👨‍👦‍👦', defender.qty, '❤', defender.hitpoints);
 
-          _this.logAttack(attacker.name, 'remaining 🔥', attacker.firepower); // does this attacker has firepower left?
+          _this.logAttack(false, attacker.name, 'remaining 🔥', attacker.firepower); // does this attacker has firepower left?
 
 
           return attacker.firepower > 0;
@@ -429,8 +453,8 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
     };
 
     _proto.round = function round(attackers, defenders) {
-      for (var _len2 = arguments.length, message = new Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-        message[_key2 - 2] = arguments[_key2];
+      for (var _len4 = arguments.length, message = new Array(_len4 > 2 ? _len4 - 2 : 0), _key4 = 2; _key4 < _len4; _key4++) {
+        message[_key4 - 2] = arguments[_key4];
       }
 
       if (this.remainings(attackers).length > 0 && this.remainings(defenders).length > 0) {
@@ -445,16 +469,16 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
     };
 
     _proto.status = function status(attackers, defenders) {
-      for (var _len3 = arguments.length, message = new Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
-        message[_key3 - 2] = arguments[_key3];
+      for (var _len5 = arguments.length, message = new Array(_len5 > 2 ? _len5 - 2 : 0), _key5 = 2; _key5 < _len5; _key5++) {
+        message[_key5 - 2] = arguments[_key5];
       }
 
       return this._status.apply(this, [attackers, defenders, false].concat(message));
     };
 
     _proto.statusWithLoss = function statusWithLoss(attackers, defenders) {
-      for (var _len4 = arguments.length, message = new Array(_len4 > 2 ? _len4 - 2 : 0), _key4 = 2; _key4 < _len4; _key4++) {
-        message[_key4 - 2] = arguments[_key4];
+      for (var _len6 = arguments.length, message = new Array(_len6 > 2 ? _len6 - 2 : 0), _key6 = 2; _key6 < _len6; _key6++) {
+        message[_key6 - 2] = arguments[_key6];
       }
 
       return this._status.apply(this, [attackers, defenders, true].concat(message));
@@ -463,16 +487,16 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
     _proto._status = function _status(attackers, defenders, loss) {
       var _this2 = this;
 
-      for (var _len5 = arguments.length, message = new Array(_len5 > 3 ? _len5 - 3 : 0), _key5 = 3; _key5 < _len5; _key5++) {
-        message[_key5 - 3] = arguments[_key5];
+      for (var _len7 = arguments.length, message = new Array(_len7 > 3 ? _len7 - 3 : 0), _key7 = 3; _key7 < _len7; _key7++) {
+        message[_key7 - 3] = arguments[_key7];
       }
 
       this.header.apply(this, message);
       attackers.forEach(function (attacker) {
-        _this2.logAttack.apply(_this2, [attacker.name, '👨‍👦‍👦', attacker.qty].concat(loss ? _this2.loss(attacker) : []));
+        _this2.logAttack.apply(_this2, [loss, attacker.name, '👨‍👦‍👦', attacker.qty].concat(loss ? _this2.loss(attacker) : []));
       });
       defenders.forEach(function (defender) {
-        _this2.logDefend.apply(_this2, [defender.name, '👨‍👦‍👦', defender.qty].concat(loss ? _this2.loss(defender) : []));
+        _this2.logDefend.apply(_this2, [loss, defender.name, '👨‍👦‍👦', defender.qty].concat(loss ? _this2.loss(defender) : []));
       });
     };
 
@@ -545,7 +569,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
   _exports.App = App;
 });;
 define('text!app.css',[],function(){return "body {\n  max-width: initial;\n}";});;
-define('text!app.html',[],function(){return "<template>\n  <require from=\"elements/aurelia-console\"></require>\n  <require from=\"./app.css\"></require>\n\n  <h1>Player vs Aliens</h1>\n\n  <h2>Configure</h2>\n  <button type=\"button\" click.delegate=\"loadData()\">Load Saved Data</button>\n\n  <h3>Base</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Air Vehicle Attack\n          <input type=\"number\" value.two-way=\"buffs.attack\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Defense\n          <input type=\"number\" value.two-way=\"buffs.defense\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Health\n          <input type=\"number\" value.two-way=\"buffs.health\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <table>\n    <h3>Extras</h3>\n    <tr>\n      <td>\n        <label>\n          Attack Buff (Item)\n          <input type=\"number\" value.two-way=\"buffs.attackItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Defense Buff (Item)\n          <input type=\"number\" value.two-way=\"buffs.defenseItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Combat Ship\n          <input type=\"number\" value.two-way=\"buffs.combatShip\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Hero</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Attack\n          <input type=\"number\" value.two-way=\"hero.attack\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Defense\n          <input type=\"number\" value.two-way=\"hero.defense\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Health\n          <input type=\"number\" value.two-way=\"hero.health\" />\n        </label>\n      </td>\n    </tr>\n    <tr>\n      <td>\n        <label>\n          Air Vehicle Attack\n          <input type=\"number\" value.two-way=\"hero.attackBuff\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Defense\n          <input type=\"number\" value.two-way=\"hero.defenseBuff\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Health\n          <input type=\"number\" value.two-way=\"hero.healthBuff\" />\n        </label>\n      </td>\n    </tr>\n    <tr>\n      <td>\n        <label>\n          Deployment Attack\n          <input type=\"number\" value.two-way=\"hero.attackItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Deployment Defense\n          <input type=\"number\" value.two-way=\"hero.defenseItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Deployment Health\n          <input type=\"number\" value.two-way=\"hero.healthItem\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Troops</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Scout Helicopters\n          <input type=\"number\" value.two-way=\"troop1.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop1.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Attack Helicopters\n          <input type=\"number\" value.two-way=\"troop2.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop2.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Jet Fighters\n          <input type=\"number\" value.two-way=\"troop3.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop3.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Advanced Interceptors\n          <input type=\"number\" value.two-way=\"troop4.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop4.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Solarwind Fighters\n          <input type=\"number\" value.two-way=\"troop5.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop5.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Alien Activities / Hives / Dropships</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Greys\n          <input type=\"number\" value.two-way=\"aat1.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Bashers\n          <input type=\"number\" value.two-way=\"aat2.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          UFOs\n          <input type=\"number\" value.two-way=\"aat3.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Destroyers\n          <input type=\"number\" value.two-way=\"aat4.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Masterminds\n          <input type=\"number\" value.two-way=\"aat5.qty\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Scavengers / Dark Activity</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Superior Scavengers\n          <input type=\"number\" value.two-way=\"sat2.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Veteran Scavengers\n          <input type=\"number\" value.two-way=\"sat3.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Elite Scavengers\n          <input type=\"number\" value.two-way=\"sat4.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Epic Scavengers\n          <input type=\"number\" value.two-way=\"sat5.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Recruited Black Ops\n          <input type=\"number\" value.two-way=\"dat1.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Superior Black Ops\n          <input type=\"number\" value.two-way=\"dat2.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Veteran Black Ops\n          <input type=\"number\" value.two-way=\"dat3.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Elite Black Ops\n          <input type=\"number\" value.two-way=\"dat4.qty\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Simulation</h2>\n\n  <button click.delegate=\"heroVsAa()\">Hero Only</button>\n  <button click.delegate=\"troopsVsAa()\">Troops Only</button>\n  <button click.delegate=\"allVsAa()\">Hero + Troops</button>\n\n  <aurelia-console if.bind=\"battleLogs.length\" logs.bind=\"battleLogs\"></aurelia-console>\n</template>\n";});;
+define('text!app.html',[],function(){return "<template>\n  <require from=\"elements/aurelia-console\"></require>\n  <require from=\"./app.css\"></require>\n\n  <h1>Player vs Aliens</h1>\n\n  <h2>Configure</h2>\n  <button type=\"button\" click.delegate=\"loadData()\">Load Saved Data</button>\n\n  <h3>Base</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Air Vehicle Attack\n          <input type=\"number\" value.two-way=\"buffs.attack\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Defense\n          <input type=\"number\" value.two-way=\"buffs.defense\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Air Vehicle Health\n          <input type=\"number\" value.two-way=\"buffs.health\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <table>\n    <h3>Extras</h3>\n    <tr>\n      <td>\n        <label>\n          Attack Buff (Item)\n          <input type=\"number\" value.two-way=\"buffs.attackItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Defense Buff (Item)\n          <input type=\"number\" value.two-way=\"buffs.defenseItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Combat Ship\n          <input type=\"number\" value.two-way=\"buffs.combatShip\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Hero</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Attack\n          <input type=\"number\" value.two-way=\"hero.attack\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Defense\n          <input type=\"number\" value.two-way=\"hero.defense\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Health\n          <input type=\"number\" value.two-way=\"hero.health\" />\n        </label>\n      </td>\n    </tr>\n    <tr>\n      <td>\n        <label>\n          Deployment Attack\n          <input type=\"number\" value.two-way=\"hero.attackItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Deployment Defense\n          <input type=\"number\" value.two-way=\"hero.defenseItem\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Deployment Health\n          <input type=\"number\" value.two-way=\"hero.healthItem\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Troops</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Scout Helicopters\n          <input type=\"number\" value.two-way=\"troop1.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop1.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Attack Helicopters\n          <input type=\"number\" value.two-way=\"troop2.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop2.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Jet Fighters\n          <input type=\"number\" value.two-way=\"troop3.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop3.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Advanced Interceptors\n          <input type=\"number\" value.two-way=\"troop4.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop4.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n      <td>\n        <label>\n          Solarwind Fighters\n          <input type=\"number\" value.two-way=\"troop5.qty\" />\n        </label>\n        <label>\n          <input type=\"checkbox\" checked.two-way=\"troop5.buff\" />\n          Air Vehicle?\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Alien Activities / Hives / Dropships</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Greys\n          <input type=\"number\" value.two-way=\"aat1.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Bashers\n          <input type=\"number\" value.two-way=\"aat2.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          UFOs\n          <input type=\"number\" value.two-way=\"aat3.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Destroyers\n          <input type=\"number\" value.two-way=\"aat4.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Masterminds\n          <input type=\"number\" value.two-way=\"aat5.qty\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h3>Scavengers / Dark Activity</h3>\n  <table>\n    <tr>\n      <td>\n        <label>\n          Superior Scavengers\n          <input type=\"number\" value.two-way=\"sat2.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Veteran Scavengers\n          <input type=\"number\" value.two-way=\"sat3.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Elite Scavengers\n          <input type=\"number\" value.two-way=\"sat4.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Epic Scavengers\n          <input type=\"number\" value.two-way=\"sat5.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Recruited Black Ops\n          <input type=\"number\" value.two-way=\"dat1.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Superior Black Ops\n          <input type=\"number\" value.two-way=\"dat2.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Veteran Black Ops\n          <input type=\"number\" value.two-way=\"dat3.qty\" />\n        </label>\n      </td>\n      <td>\n        <label>\n          Elite Black Ops\n          <input type=\"number\" value.two-way=\"dat4.qty\" />\n        </label>\n      </td>\n    </tr>\n  </table>\n\n  <h2>Simulation</h2>\n\n  <button click.delegate=\"heroVsAa()\">Hero Only</button>\n  <button click.delegate=\"troopsVsAa()\">Troops Only</button>\n  <button click.delegate=\"allVsAa()\">Hero + Troops</button>\n  <label>\n    <input type=\"checkbox\" checked.two-way=\"lossOnly\" />\n    Show Loss Only\n  </label>  \n\n  <aurelia-console if.bind=\"lossOnly && battleLossLogs.length\" logs.bind=\"battleLossLogs\"></aurelia-console>\n  <aurelia-console if.bind=\"!lossOnly && battleLogs.length\" logs.bind=\"battleLogs\"></aurelia-console>\n</template>\n";});;
 define('elements/aurelia-console',["exports", "aurelia-framework"], function (_exports, _aureliaFramework) {
   "use strict";
 

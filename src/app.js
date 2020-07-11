@@ -1,29 +1,31 @@
 import numeral from 'numeral';
 
 export class App {
+  lossOnly = true;
+  battleLossLogs = [];
   battleLogs = [];
 
   buffs = {
-    attack: 0.22,
-    defense: 1.5133,
-    health: 0.52,
-    attackItem: 0.25,
-    defenseItem: 0.25,
-    combatShip: 0.2,
+    attack: 0,
+    defense: 0,
+    health: 0,
+    attackItem: 0,
+    defenseItem: 0,
+    combatShip: 0,
   };
   hero = {
     name: 'hero',
     qty: 1,
     tier: 0,
-    attack: 30500,
-    defense: 120,
-    health: 287,
-    attackBuff: 0.03,
-    defenseBuff: 1.2,
-    healthBuff: 0.5,
-    attackItem: 0.15,
-    defenseItem: 0.05,
-    healthItem: 0.05,
+    attack: 1000,
+    defense: 100,
+    health: 100,
+    attackBuff: 0,
+    defenseBuff: 0,
+    healthBuff: 0,
+    attackItem: 0,
+    defenseItem: 0,
+    healthItem: 0,
     item: true,
     ship: true,
   };
@@ -155,7 +157,7 @@ export class App {
   };
   troop3 = {
     name: 'Jet Fighters',
-    qty: 800,
+    qty: 0,
     tier: 3,
     attack: 3,
     defense: 3,
@@ -166,7 +168,7 @@ export class App {
   };
   troop4 = {
     name: 'Advanced Interceptors',
-    qty: 92000,
+    qty: 0,
     tier: 4,
     attack: 4,
     defense: 4,
@@ -202,10 +204,16 @@ export class App {
   formatLog(...data) {
     return data.map((part) => (typeof part === 'number' ? numeral(part).format('0,0[.]00') : typeof part === 'string' ? part : JSON.stringify(part))).join(' ');
   }
-  logAttack(...data) {
+  logAttack(loss, ...data) {
+    if (loss === false) {
+      this.battleLossLogs.push({ left: true, message: this.formatLog(...data) });  
+    }
     this.battleLogs.push({ left: true, message: this.formatLog(...data) });
   }
-  logDefend(...data) {
+  logDefend(loss, ...data) {
+    if (loss === false) {
+      this.battleLossLogs.push({ right: true, message: this.formatLog(...data) });
+    }
     this.battleLogs.push({ right: true, message: this.formatLog(...data) });
   }
   header(...data) {
@@ -338,7 +346,7 @@ export class App {
       }
 
       attacker.firepower = attacker.qty * attacker.attack * (1 + attackBuff) * 0.2;
-      this.logAttack(attacker.name, '🔥', attacker.firepower, ...(attackBuff > 0 ? ['including attack buff', attackBuff * 100, '%'] : []));
+      this.logAttack(false, attacker.name, '🔥', attacker.firepower, ...(attackBuff > 0 ? ['including attack buff', attackBuff * 100, '%'] : []));
 
       this.remainings(defenders).every((defender) => {
         const tierRatio = this.tierRatios[attacker.tier][defender.tier];
@@ -370,6 +378,7 @@ export class App {
           defender.originalQty = defender.qty;
         }
         this.logDefend(
+          false,
           defender.name,
           '👨‍👦‍👦',
           defender.qty,
@@ -393,8 +402,8 @@ export class App {
           defender.qty = 0;
           attacker.firepower = (damage - defender.hit) / tierRatio;
         }
-        this.logDefend(defender.name, 'took 🎯', defender.hit, ', remaining 👨‍👦‍👦', defender.qty, '❤', defender.hitpoints);
-        this.logAttack(attacker.name, 'remaining 🔥', attacker.firepower);
+        this.logDefend(false, defender.name, 'took 🎯', defender.hit, ', remaining 👨‍👦‍👦', defender.qty, '❤', defender.hitpoints);
+        this.logAttack(false, attacker.name, 'remaining 🔥', attacker.firepower);
 
         // does this attacker has firepower left?
         return attacker.firepower > 0;
@@ -427,10 +436,10 @@ export class App {
   _status(attackers, defenders, loss, ...message) {
     this.header(...message);
     attackers.forEach((attacker) => {
-      this.logAttack(attacker.name, '👨‍👦‍👦', attacker.qty, ...(loss ? this.loss(attacker) : []));
+      this.logAttack(loss, attacker.name, '👨‍👦‍👦', attacker.qty, ...(loss ? this.loss(attacker) : []));
     });
     defenders.forEach((defender) => {
-      this.logDefend(defender.name, '👨‍👦‍👦', defender.qty, ...(loss ? this.loss(defender) : []));
+      this.logDefend(loss, defender.name, '👨‍👦‍👦', defender.qty, ...(loss ? this.loss(defender) : []));
     });
   }
 

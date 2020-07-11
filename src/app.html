@@ -80,26 +80,6 @@
     <tr>
       <td>
         <label>
-          Air Vehicle Attack
-          <input type="number" value.two-way="hero.attackBuff" />
-        </label>
-      </td>
-      <td>
-        <label>
-          Air Vehicle Defense
-          <input type="number" value.two-way="hero.defenseBuff" />
-        </label>
-      </td>
-      <td>
-        <label>
-          Air Vehicle Health
-          <input type="number" value.two-way="hero.healthBuff" />
-        </label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label>
           Deployment Attack
           <input type="number" value.two-way="hero.attackItem" />
         </label>
@@ -270,6 +250,11 @@
   <button click.delegate="heroVsAa()">Hero Only</button>
   <button click.delegate="troopsVsAa()">Troops Only</button>
   <button click.delegate="allVsAa()">Hero + Troops</button>
+  <label>
+    <input type="checkbox" checked.two-way="lossOnly" />
+    Show Loss Only
+  </label>  
 
-  <aurelia-console if.bind="battleLogs.length" logs.bind="battleLogs"></aurelia-console>
+  <aurelia-console if.bind="lossOnly && battleLossLogs.length" logs.bind="battleLossLogs"></aurelia-console>
+  <aurelia-console if.bind="!lossOnly && battleLogs.length" logs.bind="battleLogs"></aurelia-console>
 </template>
