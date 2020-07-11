@@ -225,7 +225,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
         data[_key2 - 1] = arguments[_key2];
       }
 
-      if (loss === false) {
+      if (loss === true) {
         this.battleLossLogs.push({
           left: true,
           message: this.formatLog.apply(this, data)
@@ -243,7 +243,7 @@ define('app',["exports", "numeral"], function (_exports, _numeral) {
         data[_key3 - 1] = arguments[_key3];
       }
 
-      if (loss === false) {
+      if (loss === true) {
         this.battleLossLogs.push({
           right: true,
           message: this.formatLog.apply(this, data)

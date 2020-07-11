@@ -206,13 +206,13 @@ export class App {
     return data.map((part) => (typeof part === 'number' ? numeral(part).format('0,0[.]00') : typeof part === 'string' ? part : JSON.stringify(part))).join(' ');
   }
   logAttack(loss, ...data) {
-    if (loss === false) {
+    if (loss === true) {
       this.battleLossLogs.push({ left: true, message: this.formatLog(...data) });  
     }
     this.battleLogs.push({ left: true, message: this.formatLog(...data) });
   }
   logDefend(loss, ...data) {
-    if (loss === false) {
+    if (loss === true) {
       this.battleLossLogs.push({ right: true, message: this.formatLog(...data) });
     }
     this.battleLogs.push({ right: true, message: this.formatLog(...data) });
