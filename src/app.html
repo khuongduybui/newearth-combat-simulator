@@ -247,9 +247,9 @@
 
   <h2>Simulation</h2>
 
-  <button click.delegate="heroVsAa()">Hero Only</button>
-  <button click.delegate="troopsVsAa()">Troops Only</button>
-  <button click.delegate="allVsAa()">Hero + Troops</button>
+  <button disabled.bind="!hero.attack" click.delegate="heroVsAa()">Hero Only</button>
+  <button disabled.bind="!hero.attack" click.delegate="troopsVsAa()">Troops Only</button>
+  <button disabled.bind="!hero.attack" click.delegate="allVsAa()">Hero + Troops</button>
   <label>
     <input type="checkbox" checked.two-way="lossOnly" />
     Show Loss Only
