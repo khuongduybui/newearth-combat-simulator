@@ -27,7 +27,7 @@
     "babel-jest": "26.1.0",
     "browser-sync": "2.26.12",
     "connect-history-api-fallback": "1.6.0",
-    "cypress": "4.10.0",
+    "cypress": "4.11.0",
     "debounce": "1.2.0",
     "gulp": "4.0.2",
     "gulp-babel": "8.0.0",
