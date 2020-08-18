@@ -74,6 +74,7 @@
       {
         "name": "vendor-bundle.js",
         "prepend": [
+          "node_modules/regenerator-runtime/runtime.js",
           "node_modules/promise-polyfill/dist/polyfill.min.js",
           "node_modules/alameda/alameda.js"
         ],
