@@ -18,7 +18,7 @@
     "@babel/preset-env": "7.11.0",
     "@babel/register": "7.10.5",
     "alameda": "latest",
-    "aurelia-cli": "1.3.1",
+    "aurelia-cli": "2.0.0",
     "aurelia-loader-nodejs": "1.1.0",
     "aurelia-pal-nodejs": "2.0.0",
     "aurelia-testing": "1.0.0",
