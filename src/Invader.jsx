@@ -45,45 +45,88 @@ const Invader = () => {
     <>
       <h1>Hero Invader Calculator</h1>
       <p>Please input your hero attack damage, invader attack buff, and combat ship buff if any.</p>
-      <h2>Configure</h2>
-      <label>
-        Hero Attack (e.g. <code>100,000</code>)<input type='text' value={numFormat('heroAttack')} onInput={bindToState('heroAttack')}></input>
-      </label>
-      <label>
-        Hero Invader Attack (e.g. <code>70%</code>)<input type='text' value={state.invaderAttack} onInput={bindToState('invaderAttack')}></input>
-      </label>
-      <label>
-        Invader Energy Cost Reduction (e.g. <code>35%</code>)<input type='text' value={state.energyUsage} onInput={bindToState('energyUsage')}></input>
-      </label>
-      <label>
-        Combat Ship (e.g. <code>25%</code>)<input type='text' value={state.combatShip} onInput={bindToState('combatShip')}></input>
-      </label>
+      <fieldset>
+        <legend>Configure</legend>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <label>
+                  Hero Attack (e.g. <code>100,000</code>)
+                  <input type='text' value={numFormat('heroAttack')} onInput={bindToState('heroAttack')}></input>
+                </label>
+              </td>
+              <td>
+                <label>
+                  Hero Invader Attack (e.g. <code>70%</code>)
+                  <input type='text' value={state.invaderAttack} onInput={bindToState('invaderAttack')}></input>
+                </label></td>
+              <td>
+                <label>
+                  Invader Energy Cost Reduction (e.g. <code>35%</code>)
+                  <input type='text' value={state.energyUsage} onInput={bindToState('energyUsage')}></input>
+                </label></td>
+              <td>
+                <label>
+                  Combat Ship (e.g. <code>25%</code>)
+                  <input type='text' value={state.combatShip} onInput={bindToState('combatShip')}></input>
+                </label></td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
 
       <p>Now you can input Bug Health and the tool will suggest the required chain to kill it.</p>
-      <h2>Target</h2>
-      <label>
-        Bug Level
-        <input type='text' value={state.bugLevel} onInput={bindToState('bugLevel')}></input>
-      </label>
-      <label>
-        Bug Health
-        <input type='text' value={numFormat('bugHealth')} onInput={bindToState('bugHealth')}></input>
-      </label>
+      <fieldset>
+        <legend>Target</legend>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <label>
+                  Bug Level
+                  <input type='text' value={state.bugLevel} onInput={bindToState('bugLevel')}></input>
+                </label>
+              </td>
+              <td>
+                <label>
+                  Bug Health
+                  <input type='text' value={numFormat('bugHealth')} onInput={bindToState('bugHealth')}></input>
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
 
       <p>Alternatively, feel free to adjust the chain to see the expected damage.</p>
-      <h2>Chain</h2>
-      <label>
-        Chain: {state.chain}
-        <input type='range' min='1' max='41' value={state.chain} onInput={bindToState('chain')}></input>
-      </label>
-      <label>
-        Damage
-        <input type='text' readonly value={numFormat('damage')}></input>
-      </label>
-      <label>
-        Energy
-        <input type='text' readonly value={numFormat('energy')}></input>
-      </label>
+      <fieldset>
+        <legend>Chain</legend>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <label>
+                  Chain: {state.chain}
+                  <input type='range' min='1' max='41' value={state.chain} onInput={bindToState('chain')}></input>
+                </label>
+              </td>
+              <td>
+                <label>
+                  Damage
+                  <input type='text' readonly value={numFormat('damage')}></input>
+                </label>
+              </td>
+              <td>
+                <label>
+                  Energy
+                  <input type='text' readonly value={numFormat('energy')}></input>
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
     </>
   );
 };

@@ -1,1 +1,5 @@
 @import 'https://watercss.netlify.app/dist/dark.min.css';
+
+body {
+    max-width: initial;
+}

@@ -1,3 +1,5 @@
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/khuongduybui/newearth-combat-simulator) 
+
 This project was bootstrapped with [Create Solid](https://github.com/ryansolid/create-solid).
 
 ## Available Scripts
