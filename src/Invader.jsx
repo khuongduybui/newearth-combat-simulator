@@ -12,6 +12,10 @@ const Invader = () => {
     chain: 1,
     damage: 0,
     energy: 0,
+    points: 0,
+    ppe: 0,
+    topPpe: 0,
+    goodPpe: true,
   });
   if (localStorage.getItem('invader')) setState(JSON.parse(localStorage.getItem('invader')));
   createEffect(() => localStorage.setItem('invader', JSON.stringify(state)));
@@ -19,26 +23,34 @@ const Invader = () => {
   const bindToState = (field) => (e) => setState({ [field]: e.target.value });
 
   const num = (field) => numeral(state[field]).value();
-  const numFormat = (field) => numeral(state[field]).format('0,0');
+  const numFormat = (field) => numeral(state[field]).format('0,0.[000]');
 
   const damage = (chain) => num('heroAttack') * (1 + num('invaderAttack') + num('combatShip')) * (chain * (1 + (chain - 1) * 0.025));
+  const points = (bugLevel) => [0, 20, 55, 150, 335, 640, 1110, 1730, 2575][bugLevel];
+  const chain = (bugHealth) => {
+    let chain = 1,
+      currentDamage = damage(chain);
+    while (currentDamage < bugHealth && chain < 41) currentDamage = damage(++chain);
+    return chain;
+  };
+  const energy = (bugLevel, chain) => (bugLevel + 1) * 100 * (1 - num('energyUsage')) * chain;
 
   createDependentEffect(
-    () => {
-      let chain = 1,
-        currentDamage = damage(chain);
-      while (currentDamage < num('bugHealth') && chain < 41) currentDamage = damage(++chain);
-      setState({ chain });
-    },
+    () => setState({ chain: chain(num('bugHealth')) }),
     [() => num('heroAttack'), () => num('invaderAttack'), () => num('combatShip'), () => num('bugHealth')],
     true,
   );
 
   createEffect(() => {
-    setState({
+    const newState = {
       damage: damage(num('chain')),
-      energy: (num('bugLevel') + 1) * 100 * (1 - num('energyUsage')) * num('chain'),
-    });
+      energy: energy(num('bugLevel'), num('chain')),
+      points: points(num('bugLevel')),
+    };
+    newState.ppe = newState.points / newState.energy;
+    newState.topPpe = points(8) / energy(8, chain(5000000));
+    newState.goodPpe = newState.ppe >= newState.topPpe;
+    setState(newState);
   });
 
   return (
@@ -52,25 +64,25 @@ const Invader = () => {
             <tr>
               <td>
                 <label>
-                  Hero Attack (e.g. <code>100,000</code>)
-                  <input type='text' value={numFormat('heroAttack')} onInput={bindToState('heroAttack')}></input>
+                  Hero Attack (e.g. <code>100,000</code>)<input type='text' value={numFormat('heroAttack')} onInput={bindToState('heroAttack')}></input>
                 </label>
               </td>
               <td>
                 <label>
-                  Hero Invader Attack (e.g. <code>70%</code>)
-                  <input type='text' value={state.invaderAttack} onInput={bindToState('invaderAttack')}></input>
-                </label></td>
+                  Hero Invader Attack (e.g. <code>70%</code>)<input type='text' value={state.invaderAttack} onInput={bindToState('invaderAttack')}></input>
+                </label>
+              </td>
               <td>
                 <label>
                   Invader Energy Cost Reduction (e.g. <code>35%</code>)
                   <input type='text' value={state.energyUsage} onInput={bindToState('energyUsage')}></input>
-                </label></td>
+                </label>
+              </td>
               <td>
                 <label>
-                  Combat Ship (e.g. <code>25%</code>)
-                  <input type='text' value={state.combatShip} onInput={bindToState('combatShip')}></input>
-                </label></td>
+                  Combat Ship (e.g. <code>25%</code>)<input type='text' value={state.combatShip} onInput={bindToState('combatShip')}></input>
+                </label>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -121,6 +133,12 @@ const Invader = () => {
                 <label>
                   Energy
                   <input type='text' readonly value={numFormat('energy')}></input>
+                </label>
+              </td>
+              <td>
+                <label>
+                  Event Points (<code>{numFormat('ppe')}</code> per energy spent <strong>{state.goodPpe ? 'GOOD' : 'BAD'}</strong>)
+                  <input type='text' readonly value={numFormat('points')}></input>
                 </label>
               </td>
             </tr>
