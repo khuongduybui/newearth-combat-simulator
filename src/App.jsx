@@ -16,14 +16,10 @@ const App = () => {
   const matches = createRouteHandler();
   return (
     <>
-      <ul>
-        <li>
-          <a href='#invader'>Invader</a>
-        </li>
-        <li>
-          <a href='#pve'>Alien Combat</a>
-        </li>
-      </ul>
+      <nav>
+        <a href='#invader'>Invader</a>
+        <a href='#pve'>Alien Combat</a>
+      </nav>
       <Switch>
         <Match when={matches('invader')}>
           <Invader />
@@ -32,6 +28,9 @@ const App = () => {
           <Alien />
         </Match>
       </Switch>
+      <footer>
+        <p>Credits: InDeeDo</p>
+      </footer>
     </>
   );
 };
