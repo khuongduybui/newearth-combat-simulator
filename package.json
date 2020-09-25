@@ -5,7 +5,7 @@
   "homepage": "https://newearth-invader-calculator.vercel.app/build",
   "devDependencies": {
     "numeral": "^2.0.6",
-    "solid-js": "^0.19.3",
+    "solid-js": "^0.20.0",
     "solid-scripts": "0.0.40"
   },
   "dependencies": {},

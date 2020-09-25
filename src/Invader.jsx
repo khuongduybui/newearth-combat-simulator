@@ -1,5 +1,5 @@
 import * as numeral from 'numeral';
-import { createState, createEffect, createDependentEffect } from 'solid-js';
+import { createState, createEffect } from 'solid-js';
 
 const Invader = () => {
   const [state, setState] = createState({
@@ -35,11 +35,7 @@ const Invader = () => {
   };
   const energy = (bugLevel, chain) => (bugLevel + 1) * 100 * (1 - num('energyUsage')) * chain;
 
-  createDependentEffect(
-    () => setState({ chain: chain(num('bugHealth')) }),
-    [() => num('heroAttack'), () => num('invaderAttack'), () => num('combatShip'), () => num('bugHealth')],
-    true,
-  );
+  createEffect(() => setState({ chain: chain(num('bugHealth')) }));
 
   createEffect(() => {
     const newState = {
