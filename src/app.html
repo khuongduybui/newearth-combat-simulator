@@ -1,5 +1,6 @@
 <template>
   <require from="elements/aurelia-console"></require>
+  <require from="water.css/out/water.min.css"></require>
   <require from="./app.css"></require>
 
   <h1>Player vs Aliens</h1>
@@ -253,7 +254,7 @@
   <label>
     <input type="checkbox" checked.two-way="lossOnly" />
     Show Loss Only
-  </label>  
+  </label>
 
   <aurelia-console if.bind="battleLossLogs.length && lossOnly" logs.bind="battleLossLogs"></aurelia-console>
   <aurelia-console if.bind="battleLogs.length && !lossOnly" logs.bind="battleLogs"></aurelia-console>
