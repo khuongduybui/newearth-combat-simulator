@@ -25,7 +25,7 @@
     "autoprefixer": "10.0.1",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.6.0",
-    "browser-sync": "2.26.12",
+    "browser-sync": "2.26.13",
     "connect-history-api-fallback": "1.6.0",
     "cypress": "5.4.0",
     "debounce": "1.2.0",
