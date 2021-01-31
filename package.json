@@ -29,7 +29,7 @@
     "connect-history-api-fallback": "1.6.0",
     "cypress": "6.2.0",
     "debounce": "1.2.0",
-    "eslint": "7.17.0",
+    "eslint": "7.19.0",
     "gulp": "4.0.2",
     "gulp-babel": "8.0.0",
     "gulp-cache": "1.1.3",
