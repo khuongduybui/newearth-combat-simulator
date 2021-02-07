@@ -48,7 +48,7 @@
     "postcss": "8.2.2",
     "promise-polyfill": "8.2.0",
     "regenerator-runtime": "0.13.7",
-    "tailwindcss": "2.0.2",
+    "tailwindcss": "2.0.3",
     "tailwindcss-elevation": "1.0.1",
     "text": "requirejs/text#latest",
     "through2": "4.0.2",
