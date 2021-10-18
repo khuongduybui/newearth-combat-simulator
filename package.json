@@ -12,11 +12,11 @@
     "aurelia-bootstrapper": "2.3.3"
   },
   "devDependencies": {
-    "@babel/core": "7.13.15",
-    "@babel/plugin-proposal-class-properties": "7.13.0",
-    "@babel/plugin-proposal-decorators": "7.13.15",
-    "@babel/preset-env": "7.13.15",
-    "@babel/register": "7.13.14",
+    "@babel/core": "7.15.8",
+    "@babel/plugin-proposal-class-properties": "7.14.5",
+    "@babel/plugin-proposal-decorators": "7.15.8",
+    "@babel/preset-env": "7.15.8",
+    "@babel/register": "7.15.3",
     "alameda": "latest",
     "aurelia-cli": "2.0.2",
     "aurelia-loader-nodejs": "1.1.0",
